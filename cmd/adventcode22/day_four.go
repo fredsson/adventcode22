@@ -94,4 +94,6 @@ func DayFour() {
 
 	fmt.Println(groupsForReconsideration)
 	fmt.Println(groupsWithOverlap)
+
+	openFile.File.Close()
 }
