@@ -106,7 +106,8 @@ func dayThree() {
 		return
 	}
 
-	totalPriority := 0
+	totalPriorityA := 0
+	totalPriorityB := 0
 	var group [3]*Rucksack
 	groupIndex := 0
 	for openFile.Scanner.Scan() {
@@ -114,14 +115,14 @@ func dayThree() {
 		group[groupIndex] = CreateRucksack(input)
 		groupIndex++
 		if groupIndex == 3 {
-			totalPriority += group[0].FindPriorityForMatchingItem(group[1], group[2])
+			totalPriorityB += group[0].FindPriorityForMatchingItem(group[1], group[2])
 			groupIndex = 0
 		}
 
-		/*priority := CreateRucksack(input).PriorityOfMissplacedItems()
-
-		totalPriority += priority*/
+		priority := CreateRucksack(input).PriorityOfMissplacedItems()
+		totalPriorityA += priority
 	}
 
-	fmt.Println(totalPriority)
+	fmt.Println(totalPriorityA)
+	fmt.Println(totalPriorityB)
 }
