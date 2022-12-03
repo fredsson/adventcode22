@@ -89,7 +89,7 @@ func (rucksack *Rucksack) PriorityOfMissplacedItems() int {
 	return totalPriority
 }
 
-func (rucksack *Rucksack) findPriorityForMatchingItem(second *Rucksack, third *Rucksack) int {
+func (rucksack *Rucksack) FindPriorityForMatchingItem(second *Rucksack, third *Rucksack) int {
 	for priority := 1; priority <= len(SYMBOL_BY_PRIORITY); priority++ {
 		symbol, found := SYMBOL_BY_PRIORITY[priority]
 		if found && strings.Contains(rucksack.Content, symbol) && strings.Contains(second.Content, symbol) && strings.Contains(third.Content, symbol) {
@@ -114,7 +114,7 @@ func dayThree() {
 		group[groupIndex] = CreateRucksack(input)
 		groupIndex++
 		if groupIndex == 3 {
-			totalPriority += group[0].findPriorityForMatchingItem(group[1], group[2])
+			totalPriority += group[0].FindPriorityForMatchingItem(group[1], group[2])
 			groupIndex = 0
 		}
 

@@ -16,7 +16,7 @@ func Test_createRucksack_shouldGiveCorrectCompartments(t *testing.T) {
 	}
 }
 
-func Test_priorityOfMissplacedItems(t *testing.T) {
+func Test_PriorityOfMissplacedItems(t *testing.T) {
 	testCases := []struct {
 		input string
 		want  int
@@ -41,15 +41,33 @@ func Test_priorityOfMissplacedItems(t *testing.T) {
 			}
 		})
 	}
-
 }
 
-func Test_priorityOfMissplacedItems_withMissplaced_shouldReturnPriority(t *testing.T) {
-	rucksack := CreateRucksack("abaB")
+func Test_FindPriorityForMatchingItem(t *testing.T) {
+	testCases := []struct {
+		rucksack1 string
+		rucksack2 string
+		rucksack3 string
+		want      int
+	}{
+		{"HjAB", "abCD", "abDE", 0},
+		{"abAB", "abCD", "acDE", 1},
+		{"HDAB", "abCD", "abDE", 30},
+		{"HdZB", "abZD", "ZbDE", 52},
+	}
 
-	priority := rucksack.PriorityOfMissplacedItems()
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("for %s, %s, %s", tc.rucksack1, tc.rucksack2, tc.rucksack3), func(t *testing.T) {
 
-	if priority != 1 {
-		t.Error("Priority is incorrect")
+			rucksack1 := CreateRucksack(tc.rucksack1)
+			rucksack2 := CreateRucksack(tc.rucksack2)
+			rucksack3 := CreateRucksack(tc.rucksack3)
+
+			priority := rucksack1.FindPriorityForMatchingItem(rucksack2, rucksack3)
+
+			if priority != tc.want {
+				t.Errorf("Priority is incorrect, is %d wanted %d for %s", priority, tc.want, tc.rucksack1)
+			}
+		})
 	}
 }
