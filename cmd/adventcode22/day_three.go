@@ -125,4 +125,6 @@ func dayThree() {
 
 	fmt.Println(totalPriorityA)
 	fmt.Println(totalPriorityB)
+
+	openFile.File.Close()
 }
