@@ -13,20 +13,18 @@ type Coordinates struct {
 }
 
 type Knot struct {
-	Position           Coordinates
-	PreviousPosition   Coordinates
+	Head               Coordinates
 	Body               []Coordinates
-	TailPosition       Coordinates
+	Tail               Coordinates
 	TailVisitedByIndex map[int]bool
 }
 
 func CreateKnot() *Knot {
 	knot := new(Knot)
 
-	knot.Position = Coordinates{}
-	knot.PreviousPosition = Coordinates{}
+	knot.Head = Coordinates{}
 	knot.Body = []Coordinates{}
-	knot.TailPosition = Coordinates{}
+	knot.Tail = Coordinates{}
 	knot.TailVisitedByIndex = make(map[int]bool)
 	knot.TailVisitedByIndex[0] = true
 
@@ -36,14 +34,13 @@ func CreateKnot() *Knot {
 func CreateMultiPartKnot(size int) *Knot {
 	knot := new(Knot)
 
-	knot.Position = Coordinates{}
-	knot.PreviousPosition = Coordinates{}
+	knot.Head = Coordinates{}
 	knot.Body = []Coordinates{}
 	for i := 0; i < size; i++ {
 		knot.Body = append(knot.Body, Coordinates{})
 	}
 
-	knot.TailPosition = Coordinates{}
+	knot.Tail = Coordinates{}
 	knot.TailVisitedByIndex = make(map[int]bool)
 	knot.TailVisitedByIndex[0] = true
 
@@ -88,15 +85,14 @@ func MakeCoordinatesAdjecent(current Coordinates, target Coordinates) Coordinate
 }
 
 func (knot *Knot) MoveHead(direction Coordinates) {
-	knot.PreviousPosition = knot.Position
-	knot.Position = Coordinates{
-		knot.Position.x + direction.x,
-		knot.Position.y + direction.y,
+	knot.Head = Coordinates{
+		knot.Head.x + direction.x,
+		knot.Head.y + direction.y,
 	}
 }
 
 func (knot *Knot) MoveBody() {
-	previous := knot.Position
+	previous := knot.Head
 	for index, body := range knot.Body {
 		if !CoordinatesAdjecent(previous, body) {
 			knot.Body[index] = MakeCoordinatesAdjecent(body, previous)
@@ -107,13 +103,13 @@ func (knot *Knot) MoveBody() {
 }
 
 func (knot *Knot) MoveTail() {
-	previous := knot.Position
+	previous := knot.Head
 	if len(knot.Body) > 0 {
 		previous = knot.Body[len(knot.Body)-1]
 	}
-	if !CoordinatesAdjecent(previous, knot.TailPosition) {
-		knot.TailPosition = MakeCoordinatesAdjecent(knot.TailPosition, previous)
-		index := (knot.TailPosition.y * 1000) + knot.TailPosition.x
+	if !CoordinatesAdjecent(previous, knot.Tail) {
+		knot.Tail = MakeCoordinatesAdjecent(knot.Tail, previous)
+		index := (knot.Tail.y * 1000) + knot.Tail.x
 		knot.TailVisitedByIndex[index] = true
 	}
 }
