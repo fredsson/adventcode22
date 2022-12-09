@@ -98,11 +98,11 @@ func CalculateSizeForAllDirectories(root *Dirent) map[string]int {
 	return result
 }
 
-func DaySeven() {
+func DaySeven() (interface{}, interface{}) {
 	openFile := readFileByLines("inputs/d7.txt")
 	if openFile == nil {
 		fmt.Println("could not open puzzle input!")
-		return
+		return 0, 0
 	}
 
 	root := CreateDirectory("dir /", nil)
@@ -138,12 +138,10 @@ func DaySeven() {
 		}
 	}
 
-	fmt.Println(totalSizeA)
-
 	sort.SliceStable(candidatesForRemoval, func(i, j int) bool {
 		return candidatesForRemoval[i].value < candidatesForRemoval[j].value
 	})
-	fmt.Println(candidatesForRemoval[0].value)
 
 	openFile.File.Close()
+	return totalSizeA, candidatesForRemoval[0].value
 }

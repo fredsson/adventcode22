@@ -70,11 +70,11 @@ func AssignmentRangeOverlap(group *AssignmentGroup) bool {
 	return false
 }
 
-func DayFour() {
+func DayFour() (interface{}, interface{}) {
 	openFile := readFileByLines("inputs/d4.txt")
 	if openFile == nil {
 		fmt.Println("could not open puzzle input!")
-		return
+		return 0, 0
 	}
 
 	groupsForReconsideration := 0
@@ -92,8 +92,6 @@ func DayFour() {
 		}
 	}
 
-	fmt.Println(groupsForReconsideration)
-	fmt.Println(groupsWithOverlap)
-
 	openFile.File.Close()
+	return groupsForReconsideration, groupsWithOverlap
 }

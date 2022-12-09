@@ -13,11 +13,11 @@ func areValuesUnique(values []string) bool {
 	return true
 }
 
-func DaySix() {
+func DaySix() (interface{}, interface{}) {
 	openFile := readFileByLines("inputs/d6.txt")
 	if openFile == nil {
 		fmt.Println("could not open puzzle input!")
-		return
+		return 0, 0
 	}
 
 	openFile.Scanner.Scan()
@@ -25,6 +25,7 @@ func DaySix() {
 
 	buffer := []string{}
 
+	result := 0
 	for index, code := range input {
 		char := string(code)
 		if len(buffer) < 4 {
@@ -34,13 +35,14 @@ func DaySix() {
 		}
 		if len(buffer) >= 4 {
 			if areValuesUnique(buffer) {
-				fmt.Println(index + 1)
+				result = index + 1
 				break
 			}
 		}
 	}
 
 	bufferB := []string{}
+	resultB := 0
 	for index, code := range input {
 		char := string(code)
 		if len(bufferB) < 14 {
@@ -50,11 +52,12 @@ func DaySix() {
 		}
 		if len(bufferB) >= 14 {
 			if areValuesUnique(bufferB) {
-				fmt.Println(index + 1)
+				resultB = index + 1
 				break
 			}
 		}
 	}
 
 	openFile.File.Close()
+	return result, resultB
 }

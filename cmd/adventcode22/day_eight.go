@@ -106,11 +106,11 @@ func CalculateScenicScore(index int, patch []string) int {
 	return (visibleRangeInNegativeX * visibleRangeInPositiveX * visibleRangeInNegativeY * visibleRangeInPositiveY)
 }
 
-func DayEight() {
+func DayEight() (interface{}, interface{}) {
 	openFile := readFileByLines("inputs/d8.txt")
 	if openFile == nil {
 		fmt.Println("could not open puzzle input!")
-		return
+		return 0, 0
 	}
 
 	treePatch := []string{}
@@ -148,8 +148,6 @@ func DayEight() {
 		}
 	}
 
-	fmt.Println(visibleTrees)
-	fmt.Println(highestScore)
-
 	openFile.File.Close()
+	return visibleTrees, highestScore
 }

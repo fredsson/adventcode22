@@ -57,11 +57,11 @@ func (supplyArea *SupplyArea) MultiMoveSupply(amount int, fromIndex int, toIndex
 	supplyArea.areas[adjustedToIndex] = append(supplyArea.areas[adjustedToIndex], supplies...)
 }
 
-func DayFive() {
+func DayFive() (interface{}, interface{}) {
 	openFile := readFileByLines("inputs/d5.txt")
 	if openFile == nil {
 		fmt.Println("could not open puzzle input!")
-		return
+		return 0, 0
 	}
 
 	supplyAreaInput := []string{}
@@ -107,8 +107,6 @@ func DayFive() {
 		resultB += area[top]
 	}
 
-	fmt.Println(result)
-	fmt.Println(resultB)
-
 	openFile.File.Close()
+	return result, resultB
 }

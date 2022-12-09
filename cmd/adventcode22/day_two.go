@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -93,7 +92,7 @@ func findActionFromOutcome(opponentAction string, expectedOutcome string) string
 	return SYMBOL_FOR_ROCK
 }
 
-func DayTwo() {
+func DayTwo() (interface{}, interface{}) {
 	openFile := readFileByLines("inputs/d2.txt")
 
 	totalScoreA := 0
@@ -111,8 +110,8 @@ func DayTwo() {
 		scoreForAction := decideActionScore(expectedAction)
 		totalScore += scoreForWin + scoreForAction
 	}
-	fmt.Println(totalScoreA)
-	fmt.Println(totalScore)
 
 	openFile.File.Close()
+
+	return totalScoreA, totalScore
 }

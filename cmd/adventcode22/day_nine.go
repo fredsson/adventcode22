@@ -123,11 +123,11 @@ func (knot *Knot) Move(direction string, steps int) {
 	}
 }
 
-func DayNine() {
+func DayNine() (interface{}, interface{}) {
 	openFile := readFileByLines("inputs/d9.txt")
 	if openFile == nil {
 		fmt.Println("could not open puzzle input!")
-		return
+		return 0, 0
 	}
 
 	knot := CreateKnot()
@@ -141,8 +141,6 @@ func DayNine() {
 		multiKnot.Move(commands[0], steps)
 	}
 
-	fmt.Println(len(knot.TailVisitedByIndex))
-	fmt.Println(len(multiKnot.TailVisitedByIndex))
-
 	openFile.File.Close()
+	return len(knot.TailVisitedByIndex), len(multiKnot.TailVisitedByIndex)
 }

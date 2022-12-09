@@ -99,11 +99,11 @@ func (rucksack *Rucksack) FindPriorityForMatchingItem(second *Rucksack, third *R
 	return 0
 }
 
-func dayThree() {
+func dayThree() (interface{}, interface{}) {
 	openFile := readFileByLines("inputs/d3.txt")
 	if openFile == nil {
 		fmt.Println("could not open puzzle input!")
-		return
+		return 0, 0
 	}
 
 	totalPriorityA := 0
@@ -123,8 +123,6 @@ func dayThree() {
 		totalPriorityA += priority
 	}
 
-	fmt.Println(totalPriorityA)
-	fmt.Println(totalPriorityB)
-
 	openFile.File.Close()
+	return totalPriorityA, totalPriorityB
 }

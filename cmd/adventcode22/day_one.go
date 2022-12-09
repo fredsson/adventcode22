@@ -30,11 +30,11 @@ func readFileByLines(filename string) *OpenFile {
 	return openFile
 }
 
-func dayOne() {
+func DayOne() (interface{}, interface{}) {
 	openFile := readFileByLines("inputs/d1.txt")
 	if openFile == nil {
 		fmt.Println("could not open puzzle input!")
-		return
+		return 0, 0
 	}
 
 	var caloriesByElf []int
@@ -58,9 +58,10 @@ func dayOne() {
 
 	sort.Ints(caloriesByElf)
 
-	fmt.Println(caloriesByElf[len(caloriesByElf)-1])
+	a := caloriesByElf[len(caloriesByElf)-1]
 
-	fmt.Println(caloriesByElf[len(caloriesByElf)-1] + caloriesByElf[len(caloriesByElf)-2] + caloriesByElf[len(caloriesByElf)-3])
+	b := caloriesByElf[len(caloriesByElf)-1] + caloriesByElf[len(caloriesByElf)-2] + caloriesByElf[len(caloriesByElf)-3]
 
 	openFile.File.Close()
+	return a, b
 }

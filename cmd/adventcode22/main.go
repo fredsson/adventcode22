@@ -6,8 +6,8 @@ import (
 )
 
 func main() {
-	days := []func(){
-		dayOne,
+	days := []func() (interface{}, interface{}){
+		DayOne,
 		DayTwo,
 		dayThree,
 		DayFour,
@@ -18,11 +18,15 @@ func main() {
 		DayNine,
 	}
 
+	total := time.Now()
 	for index, dayFunc := range days {
 		start := time.Now()
-		fmt.Println("------ day", index+1, "---------")
-		dayFunc()
+		a, b := dayFunc()
 		duration := time.Since(start)
-		fmt.Println("duration:", duration)
+		fmt.Printf("------ day %d (%s) -----\n", index+1, duration.Truncate(time.Microsecond))
+		fmt.Println(a)
+		fmt.Println(b)
 	}
+	fmt.Println("-------")
+	fmt.Println("Total:", time.Since(total))
 }
