@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 func main() {
 	days := []func(){
@@ -16,7 +19,10 @@ func main() {
 	}
 
 	for index, dayFunc := range days {
+		start := time.Now()
 		fmt.Println("------ day", index+1, "---------")
 		dayFunc()
+		duration := time.Since(start)
+		fmt.Println("duration:", duration)
 	}
 }
