@@ -8,7 +8,8 @@ src_files = cmd/adventcode22/main.go\
 	cmd/adventcode22/day_seven.go\
 	cmd/adventcode22/day_eight.go\
 	cmd/adventcode22/day_nine.go\
-	cmd/adventcode22/day_ten.go
+	cmd/adventcode22/day_ten.go\
+	cmd/adventcode22/day_eleven.go
 
 test_files = cmd/adventcode22/day_three_test.go\
 	cmd/adventcode22/day_four_test.go\
