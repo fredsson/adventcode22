@@ -30,6 +30,7 @@ func main() {
 		fmt.Printf("------ day %d (%s) -----\n", index+1, duration.Truncate(time.Microsecond))
 		fmt.Println(a)
 		fmt.Println(b)
+		fmt.Println("-------")
 	}
 	fmt.Println("-------")
 	fmt.Println("Total:", time.Since(total))
