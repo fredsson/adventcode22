@@ -11,7 +11,8 @@ src_files = cmd/adventcode22/main.go\
 	cmd/adventcode22/day_ten.go\
 	cmd/adventcode22/day_eleven.go\
 	cmd/adventcode22/day_fifteen.go\
-	cmd/adventcode22/day_sixteen.go
+	cmd/adventcode22/day_sixteen.go\
+	cmd/adventcode22/day_twenty.go
 
 test_files = cmd/adventcode22/day_three_test.go\
 	cmd/adventcode22/day_four_test.go\
