@@ -21,6 +21,7 @@ func main() {
 		DayFifteen,
 		DaySixteen,
 		DayTwenty,
+		DayTwentyone,
 	}
 
 	total := time.Now()
