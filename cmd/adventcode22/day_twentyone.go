@@ -16,6 +16,13 @@ type CalculationMonkey struct {
 	Operation  OperationFunc
 }
 
+func (monkey *CalculationMonkey) Reset() {
+	monkey.WaitingOn = monkey.Dependants
+	if len(monkey.Dependants) > 0 {
+		monkey.Value = 0
+	}
+}
+
 func NamesFromOperation(operation string, operator string) []string {
 	result := []string{}
 	names := strings.Split(operation, operator)
@@ -26,33 +33,38 @@ func NamesFromOperation(operation string, operator string) []string {
 	return result
 }
 
-func MonkeyOperationFromInput(input string) ([]string, OperationFunc) {
+func MonkeyOperationFromInput(monkey *CalculationMonkey, input string) {
 	var result []string
-	var operation OperationFunc
 
 	if strings.Contains(input, "*") {
 		result = NamesFromOperation(input, "*")
-		operation = func(left float64, right float64) float64 {
+		monkey.Dependants = result
+		monkey.WaitingOn = result
+		monkey.Operation = func(left, right float64) float64 {
 			return left * right
 		}
 	} else if strings.Contains(input, "-") {
 		result = NamesFromOperation(input, "-")
-		operation = func(left float64, right float64) float64 {
+		monkey.Dependants = result
+		monkey.WaitingOn = result
+		monkey.Operation = func(left, right float64) float64 {
 			return left - right
 		}
 	} else if strings.Contains(input, "+") {
 		result = NamesFromOperation(input, "+")
-		operation = func(left float64, right float64) float64 {
+		monkey.Dependants = result
+		monkey.WaitingOn = result
+		monkey.Operation = func(left, right float64) float64 {
 			return left + right
 		}
 	} else if strings.Contains(input, "/") {
 		result = NamesFromOperation(input, "/")
-		operation = func(left float64, right float64) float64 {
+		monkey.Dependants = result
+		monkey.WaitingOn = result
+		monkey.Operation = func(left, right float64) float64 {
 			return left / right
 		}
 	}
-
-	return result, operation
 }
 
 func CreateCalculatingMonkey(input string) *CalculationMonkey {
@@ -63,10 +75,7 @@ func CreateCalculatingMonkey(input string) *CalculationMonkey {
 	if err == nil {
 		monkey.Value = float64(value)
 	} else {
-		names, operation := MonkeyOperationFromInput(parts[1])
-		monkey.WaitingOn = names
-		monkey.Dependants = names
-		monkey.Operation = operation
+		MonkeyOperationFromInput(monkey, parts[1])
 	}
 
 	monkey.Name = parts[0]
@@ -98,29 +107,11 @@ func RemoveWaitingFromMonkey(monkey *CalculationMonkey, name string) {
 	monkey.WaitingOn = left
 }
 
-func DayTwentyone() (interface{}, interface{}) {
-	openFile := readFileByLines("inputs/d21.txt")
-	if openFile == nil {
-		fmt.Println("could not open puzzle input!")
-		return 0, 0
-	}
-
-	monkeysByName := make(map[string]*CalculationMonkey)
-	for openFile.Scanner.Scan() {
-		input := openFile.Scanner.Text()
-
-		monkey := CreateCalculatingMonkey(input)
-
-		monkeysByName[monkey.Name] = monkey
-	}
-
-	initial := monkeysByName["root"]
-
+func ResolveWaitingMonkeys(initialMonkey *CalculationMonkey, monkeysByName map[string]*CalculationMonkey) {
 	waitingOn := make(map[string][]*CalculationMonkey)
 
-	AddWaitingMonkeys(initial, waitingOn)
-
-	for len(initial.WaitingOn) > 0 {
+	AddWaitingMonkeys(initialMonkey, waitingOn)
+	for len(initialMonkey.WaitingOn) > 0 {
 		readyToCalculate := []*CalculationMonkey{}
 
 		for key, waitingMonkeys := range waitingOn {
@@ -144,7 +135,73 @@ func DayTwentyone() (interface{}, interface{}) {
 			monkey.Value = monkey.Operation(left.Value, right.Value)
 		}
 	}
+}
+
+func DayTwentyoneFirst(monkeysByName map[string]*CalculationMonkey) int {
+	initial := monkeysByName["root"]
+
+	ResolveWaitingMonkeys(initial, monkeysByName)
+
+	return int(initial.Value)
+}
+
+func DayTwentyoneSecond(monkeysByName map[string]*CalculationMonkey) int {
+	initial := monkeysByName["root"]
+	initial.Value = 2000
+	initial.Operation = func(f1, f2 float64) float64 {
+		return f1 - f2
+	}
+
+	human := monkeysByName["humn"]
+
+	human.Value = 3296135418819
+	var current float64 = 3296135418819
+	for i := 1; i < 20; i++ {
+		ResolveWaitingMonkeys(initial, monkeysByName)
+
+		if initial.Value == 0 {
+			return int(current)
+		}
+
+		if initial.Value > 0 {
+			current = current + float64(i)
+		}
+		for _, cm := range monkeysByName {
+			cm.Reset()
+		}
+		human.Value = current
+	}
+
+	// if waiting on humn
+	//  add to a list with monkeys to evaluate at the end
+	//  replace operation with inverse
+	// if humn: skip
+	return 0
+}
+
+func DayTwentyone() (interface{}, interface{}) {
+	openFile := readFileByLines("inputs/d21.txt")
+	if openFile == nil {
+		fmt.Println("could not open puzzle input!")
+		return 0, 0
+	}
+
+	monkeysByName := make(map[string]*CalculationMonkey)
+	monkeysByNameB := make(map[string]*CalculationMonkey)
+	for openFile.Scanner.Scan() {
+		input := openFile.Scanner.Text()
+
+		monkey := CreateCalculatingMonkey(input)
+		monkeyB := CreateCalculatingMonkey(input)
+
+		monkeysByName[monkey.Name] = monkey
+		monkeysByNameB[monkeyB.Name] = monkeyB
+	}
+
+	first := DayTwentyoneFirst(monkeysByName)
+
+	second := DayTwentyoneSecond(monkeysByNameB)
 
 	openFile.File.Close()
-	return int(initial.Value), 0
+	return first, second
 }
