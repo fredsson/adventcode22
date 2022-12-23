@@ -34,6 +34,9 @@ func main() {
 		DayFourteen,
 		DayFifteen,
 		DaySixteen,
+		DaySeventeen,
+		DayEighteen,
+		DayNineteen,
 		DayTwenty,
 		DayTwentyone,
 	}
