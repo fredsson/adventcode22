@@ -19,6 +19,7 @@ func main() {
 		DayTen,
 		DayEleven,
 		DayTwelve,
+		DayThirteen,
 		DayFifteen,
 		DaySixteen,
 	}
