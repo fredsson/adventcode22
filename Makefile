@@ -28,7 +28,7 @@ build:
 	go build -o bin/adventcode22 ${src_files}
 
 run:
-	go run ${src_files}
+	go run ${src_files} $(day)
 
 test:
 	go test ${src_files} ${test_files}
