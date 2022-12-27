@@ -40,7 +40,6 @@ func main() {
 		DayTwenty,
 		DayTwentyone,
 		DayTwentytwo,
-		DayTwentytwo,
 		DayTwentythree,
 		DayTwentyfour,
 		DayTwentyfive,

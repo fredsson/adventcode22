@@ -29,7 +29,8 @@ test_files = cmd/adventcode22/day_three_test.go\
 	cmd/adventcode22/day_four_test.go\
 	cmd/adventcode22/day_five_test.go\
 	cmd/adventcode22/day_seven_test.go\
-	cmd/adventcode22/day_fifteen_test.go
+	cmd/adventcode22/day_fifteen_test.go\
+	cmd/adventcode22/day_twentyfive_test.go
 
 build:
 	go build -o bin/adventcode22 ${src_files}
