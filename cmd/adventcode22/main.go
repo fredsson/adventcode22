@@ -39,6 +39,10 @@ func main() {
 		DayNineteen,
 		DayTwenty,
 		DayTwentyone,
+		DayTwentytwo,
+		DayTwentythree,
+		DayTwentyfour,
+		DayTwentyfive,
 	}
 
 	dayIndex := dayToRun - 1

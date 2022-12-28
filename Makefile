@@ -19,13 +19,18 @@ src_files = cmd/adventcode22/main.go\
 	cmd/adventcode22/day_eighteen.go\
 	cmd/adventcode22/day_nineteen.go\
 	cmd/adventcode22/day_twenty.go\
-	cmd/adventcode22/day_twentyone.go
+	cmd/adventcode22/day_twentyone.go\
+	cmd/adventcode22/day_twentytwo.go\
+	cmd/adventcode22/day_twentythree.go\
+	cmd/adventcode22/day_twentyfour.go\
+	cmd/adventcode22/day_twentyfive.go
 
 test_files = cmd/adventcode22/day_three_test.go\
 	cmd/adventcode22/day_four_test.go\
 	cmd/adventcode22/day_five_test.go\
 	cmd/adventcode22/day_seven_test.go\
-	cmd/adventcode22/day_fifteen_test.go
+	cmd/adventcode22/day_fifteen_test.go\
+	cmd/adventcode22/day_twentyfive_test.go
 
 build:
 	go build -o bin/adventcode22 ${src_files}
