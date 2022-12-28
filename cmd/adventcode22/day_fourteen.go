@@ -28,12 +28,12 @@ func CreateRockLine(input string) *RockLine {
 	return line
 }
 
-func SimulateSand(world []string, max Location) bool {
+func SimulateSandNeededToReachBottom(world []string, max Location) bool {
 	currentPosition := Location{500, 0}
 
 	hasMoved := true
 	for hasMoved {
-		if currentPosition.y >= max.y-1 {
+		if currentPosition.y >= max.y-2 {
 			return true
 		}
 
@@ -58,27 +58,52 @@ func SimulateSand(world []string, max Location) bool {
 	return false
 }
 
-func FindMinMax(lines []*RockLine) (Location, Location) {
-	min := Location{math.MaxInt32, 0}
-	max := Location{math.MinInt32, math.MinInt32}
+func SimulateSandNeededToReachStart(world []string, max Location) bool {
+	currentPosition := Location{500, 0}
+
+	hasMoved := true
+	for hasMoved {
+		down := ((currentPosition.y + 1) * max.x) + currentPosition.x
+		downLeft := ((currentPosition.y + 1) * max.x) + currentPosition.x - 1
+		downRight := ((currentPosition.y + 1) * max.x) + currentPosition.x + 1
+
+		if world[down] == "." {
+			currentPosition = Location{currentPosition.x, currentPosition.y + 1}
+		} else if world[downLeft] == "." {
+			currentPosition = Location{currentPosition.x - 1, currentPosition.y + 1}
+		} else if world[downRight] == "." {
+			currentPosition = Location{currentPosition.x + 1, currentPosition.y + 1}
+		} else {
+			hasMoved = false
+		}
+	}
+
+	index := (currentPosition.y * max.x) + currentPosition.x
+	world[index] = "@"
+
+	if currentPosition.x == 500 && currentPosition.y == 0 {
+		return true
+	}
+
+	return false
+
+}
+
+func FindMax(lines []*RockLine) Location {
+	max := Location{math.MinInt32, 0}
 
 	for _, line := range lines {
 		for _, point := range line.Points {
-			if point.x < min.x {
-				min.x = point.x
-			} else if point.x > max.x {
+			if point.x > max.x {
 				max.x = point.x + 1
 			}
-
-			if point.y < min.y {
-				min.y = point.y
-			} else if point.y > max.y {
+			if point.y > max.y {
 				max.y = point.y + 1
 			}
 		}
 	}
 
-	return min, max
+	return max
 }
 
 func DrawLine(line *RockLine, world []string, width int) {
@@ -127,7 +152,9 @@ func DayFourteen() (interface{}, interface{}) {
 		rockLines = append(rockLines, line)
 	}
 
-	_, max := FindMinMax(rockLines)
+	max := FindMax(rockLines)
+	max.x = 1000
+	max.y = max.y + 2
 
 	world := []string{}
 
@@ -141,19 +168,27 @@ func DayFourteen() (interface{}, interface{}) {
 		DrawLine(line, world, max.x)
 	}
 
+	bottomLine := CreateRockLine(fmt.Sprintf("0,%d -> 999,%d", max.y-1, max.y-1))
+	DrawLine(bottomLine, world, max.x)
+
 	SandHasReachedAbyss := false
 	unitsOfSand := 0
 	for !SandHasReachedAbyss {
-		SandHasReachedAbyss = SimulateSand(world, max)
+		SandHasReachedAbyss = SimulateSandNeededToReachBottom(world, max)
 		if !SandHasReachedAbyss {
 			unitsOfSand++
 		}
 	}
 
-	// draw walls
-	// for sandHasNotReachedAbyss
-	//  finalPositino := simulate sand
-	//  draw sand
+	SandHasReachedTop := false
+	unitsOfSandB := unitsOfSand + 1
+	for !SandHasReachedTop {
+		SandHasReachedTop = SimulateSandNeededToReachStart(world, max)
+		if !SandHasReachedTop {
+			unitsOfSandB++
+		}
+	}
+
 	openFile.File.Close()
-	return unitsOfSand, 0
+	return unitsOfSand, unitsOfSandB
 }
